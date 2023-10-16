@@ -52,15 +52,13 @@ int main()
     for (int i = 0; i < n; i++)
     {
         if (i != 0 && b[i].num != b[i - 1].num)
-        {
             cnt++;
-        }
         b[i].cnt = cnt;
     }
 
     for (int i = 0; i < n; i++)
     {
-        int tmp = Bsearch(b, n + 1, a[i]);
+        int tmp = Bsearch(b, n, a[i]);
         printf("%d ", b[tmp].cnt);
     }
 
