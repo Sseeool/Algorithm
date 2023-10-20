@@ -7,8 +7,6 @@ typedef struct {
     char log[6];
 } Employee;
 
-Employee arr[1000001];
-
 int compare (const void *p1, const void *p2)
 {
     Employee pa = *(Employee*)p1;
