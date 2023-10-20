@@ -8,7 +8,7 @@
 struct Trie
 {
     int isLeaf; //노드가 리프 노드인 경우 1
-    struct Trie* character[CHAR_SIZE];
+    struct Trie* character[CHAR_SIZE]; // 문자의 집합
 };
 
 // 새로운 Trie 노드를 반환하는 함수
