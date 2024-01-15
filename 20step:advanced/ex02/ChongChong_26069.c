@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-#define TABLE_SIZE 2000
+#define TABLE_SIZE 10007
 #define MAX_NAME 21
 #define RABBIT "ChongChong"
 
@@ -33,58 +33,62 @@ unsigned int make_idx(char *name)
     return idx;
 }
 
-bool insert_hash_table(Person *p)
-{
-    int idx = make_idx(p->name);
-
-    if (p == NULL)
-    {
-        return false;
-    }
-    p->next = hash_table[idx];
-    hash_table[idx] = p;
-    return true;
-}
-
-Person *lookup_hash_table(char *name)
+bool insert_hash_table(char *name)
 {
     int idx = make_idx(name);
     Person *temp = hash_table[idx];
-    while (temp != NULL && strcmp(temp->name, name) != 0)
+    while (temp != NULL)
     {
+        if (strcmp(temp->name, name) == 0)
+        {
+            return false;
+        }
         temp = temp->next;
     }
-    return temp;
+    Person *newPerson = (Person *)malloc(sizeof(Person));
+    strcpy(newPerson->name, name);
+    newPerson->next = hash_table[idx];
+    hash_table[idx] = newPerson;
+    return true;
+}
+
+bool lookup_hash_table(char *name)
+{
+    int idx = make_idx(name);
+    Person *temp = hash_table[idx];
+    while (temp != NULL)
+    {
+        if (strcmp(temp->name, name) == 0)
+        {
+            return true;
+        }
+        temp = temp->next;
+    }
+    return false;
 }
 
 int main()
 {
-    int n, count = 1, i = 0;
+    int n, count = 1;
     char temp1[MAX_NAME], temp2[MAX_NAME];
 
     scanf("%d", &n);
     init_hash_table();
-
-    Person ChongChong;
-    strcpy(ChongChong.name, RABBIT);
-    insert_hash_table(&ChongChong);
+    insert_hash_table(RABBIT);
 
     for (int i = 0; i < n; i++)
     {
         scanf("%s %s", temp1, temp2);
-        if ((lookup_hash_table(temp1) != NULL && lookup_hash_table(temp2) == NULL))
+        if (lookup_hash_table(temp1) || lookup_hash_table(temp2))
         {
-            count++;
-            Person newPerson3;
-            strcpy(newPerson3.name, temp2);
-            insert_hash_table(&newPerson3);
-        }
-        else if ((lookup_hash_table(temp1) == NULL && lookup_hash_table(temp2) != NULL))
-        {
-            count++;
-            Person newPerson4;
-            strcpy(newPerson4.name, temp1);
-            insert_hash_table(&newPerson4);
+            if (insert_hash_table(temp1))
+            {
+                count++;
+            }
+            if (insert_hash_table(temp2))
+            {
+                count++;
+            }
         }
     }
     printf("%d", count);
